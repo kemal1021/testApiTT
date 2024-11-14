@@ -52,14 +52,11 @@
   <script>
     // TikTok App credentials (Client ID - Public)
     const clientKey = '<CLIENT_KEY>'; // Replace with your actual Client Key
-    const redirectUri = encodeURIComponent('https://your-redirect-url.com'); // Replace with your actual redirect URI
+    const redirectUri = encodeURIComponent('https://test-api-tt-o58d.vercel.app/'); // Replace with your actual redirect URI
     const scopes = [
       'user.info.basic',
       'user.info.profile',
-      'user.info.stats',
-      'video.publish',
-      'video.upload',
-      'video.list'
+      'user.info.stats'
     ].join(',');
 
     // Construct the TikTok OAuth URL
