@@ -1,70 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Continue with TikTok</title>
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      width: 100%;
-    }
-    /* Button Styling */
-    .button-36 {
-      background-image: linear-gradient(92.88deg, #455eb5 9.16%, #5643cc 43.89%, #673fd7 64.72%);
-      border-radius: 8px;
-      border-style: none;
-      color: #ffffff;
-      cursor: pointer;
-      font-family: "Inter UI", sans-serif;
-      font-size: 16px;
-      font-weight: 500;
-      height: 4rem;
-      padding: 0 1.6rem;
-      text-align: center;
-      text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
-      transition: all 0.5s;
-      display: inline-flex;
-      align-items: center;
-      text-decoration: none;
-    }
-    .button-36:hover {
-      box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
-      transition-duration: 0.1s;
-    }
-    .button-36 img {
-      margin-right: 10px;
-      height: 24px;
-      width: 24px;
-    }
-  </style>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TikTok Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+            margin: 0;
+            font-family: "Inter UI", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        }
+
+        .button-36 {
+            background-image: linear-gradient(92.88deg, #455eb5 9.16%, #5643cc 43.89%, #673fd7 64.72%);
+            border-radius: 8px;
+            border-style: none;
+            box-sizing: border-box;
+            color: #ffffff;
+            cursor: pointer;
+            flex-shrink: 0;
+            font-size: 16px;
+            font-weight: 500;
+            height: 4rem;
+            padding: 0 1.6rem;
+            text-align: center;
+            text-decoration: none;
+            text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+            transition: all 0.5s;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button-36:hover {
+            box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
+            transition-duration: 0.1s;
+        }
+
+        .button-36 img {
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        @media (min-width: 768px) {
+            .button-36 {
+                padding: 0 2.6rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <button class="button-36" onclick="loginWithTikTok()">
+        Continue with TikTok
+    </button>
 
-  <!-- HTML Button for TikTok Login -->
-  <a id="tiktok-login" class="button-36">
-     Continue With TikTok
-  </a>
+    <script>
+        // TikTok Authentication Configuration
+        const config = {
+            clientKey: 'aw1f3cx28k4wj2xj', // Replace with your client key
+            clientSecret: 'l2Q2VPxfqZGt5R6baLnGmyPUjdTxJmEv', // Replace with your client secret
+            redirectUri: 'http://localhost:3000/callback', // Replace with your redirect URI
+            scopes: [
+                'user.info.basic',
+                'user.info.profile',
+                'user.info.stats',
+                'video.publish',
+                'video.upload',
+                'video.list'
+            ],
+            state: generateRandomString(16)
+        };
 
-  <script>
-    // TikTok App credentials (Client ID - Public)
-    const clientKey = '<CLIENT_KEY>'; // Replace with your actual Client Key
-    const redirectUri = encodeURIComponent('https://test-api-tt-o58d.vercel.app/'); // Replace with your actual redirect URI
-    const scopes = [
-      'user.info.basic',
-      'user.info.profile',
-      'user.info.stats'
-    ].join(',');
+        // Generate random string for state parameter
+        function generateRandomString(length) {
+            const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let text = '';
+            for (let i = 0; i < length; i++) {
+                text += possible.charAt(Math.floor(Math.random() * possible.length));
+            }
+            return text;
+        }
 
-    // Construct the TikTok OAuth URL
-    const tiktokAuthUrl = `https://www.tiktok.com/auth/authorize/?client_key=${clientKey}&scope=${scopes}&response_type=code&redirect_uri=${redirectUri}`;
+        // Function to login with TikTok
+        function loginWithTikTok() {
+            // Construct the authentication URL
+            const authUrl = new URL('https://www.tiktok.com/auth/authorize/');
+            
+            // Add required parameters
+            authUrl.searchParams.append('client_key', config.clientKey);
+            authUrl.searchParams.append('redirect_uri', config.redirectUri);
+            authUrl.searchParams.append('scope', config.scopes.join(','));
+            authUrl.searchParams.append('response_type', 'code');
+            authUrl.searchParams.append('state', config.state);
 
-    // Set the URL to the button
-    document.getElementById('tiktok-login').href = tiktokAuthUrl;
-  </script>
+            // Store the state and client secret in localStorage for the callback
+            localStorage.setItem('tiktok_auth_state', config.state);
+            localStorage.setItem('tiktok_client_secret', config.clientSecret);
 
+            // Redirect to TikTok login page
+            window.location.href = authUrl.toString();
+        }
+    </script>
 </body>
 </html>
