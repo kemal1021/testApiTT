@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <style>
-    body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        width: 100%;
-    }
+      body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          width: 100%;
+      }
       /* CSS */
       .button-36 {
         background-image: linear-gradient(92.88deg, #455eb5 9.16%, #5643cc 43.89%, #673fd7 64.72%);
@@ -32,11 +32,20 @@
         user-select: none;
         -webkit-user-select: none;
         touch-action: manipulation;
+        display: inline-flex;
+        align-items: center;
+        text-decoration: none;
       }
 
       .button-36:hover {
         box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
         transition-duration: 0.1s;
+      }
+
+      .button-36 img {
+        margin-right: 10px;
+        height: 24px;
+        width: 24px;
       }
 
       @media (min-width: 768px) {
@@ -47,7 +56,28 @@
     </style>
   </head>
   <body>
-    <!-- HTML !-->
-    <button class="button-36" role="button">Continue</button>
+    <?php
+      $authentication = new Authentication(array(
+          'client_key' => 'aw1f3cx28k4wj2xj',
+          'client_secret' => 'l2Q2VPxfqZGt5R6baLnGmyPUjdTxJmEv'
+      ));
+      
+      $redirectUri = 'https://path/to/tiktok/login/redirect.php';
+      
+      $scopes = array(
+          'user.info.basic',
+          'user.info.profile',
+          'user.info.stats',
+          'video.publish',
+          'video.upload',
+          'video.list'
+      );
+      
+      $authenticationUrl = $authentication->getAuthenticationUrl($redirectUri, $scopes);
+    ?>
+    <!-- HTML Button with TikTok Login URL !-->
+    <a href="<?php echo $authenticationUrl; ?>" class="button-36" role="button">
+      <img src="/path/to/tiktok/logo.png" alt="TikTok Logo" /> Continue With TikTok
+    </a>
   </body>
 </html>
