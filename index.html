@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Continue with TikTok</title>
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100%;
+    }
+    /* Button Styling */
+    .button-36 {
+      background-image: linear-gradient(92.88deg, #455eb5 9.16%, #5643cc 43.89%, #673fd7 64.72%);
+      border-radius: 8px;
+      border-style: none;
+      color: #ffffff;
+      cursor: pointer;
+      font-family: "Inter UI", sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      height: 4rem;
+      padding: 0 1.6rem;
+      text-align: center;
+      text-shadow: rgba(0, 0, 0, 0.25) 0 3px 8px;
+      transition: all 0.5s;
+      display: inline-flex;
+      align-items: center;
+      text-decoration: none;
+    }
+    .button-36:hover {
+      box-shadow: rgba(80, 63, 205, 0.5) 0 1px 30px;
+      transition-duration: 0.1s;
+    }
+    .button-36 img {
+      margin-right: 10px;
+      height: 24px;
+      width: 24px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HTML Button for TikTok Login -->
+  <a id="tiktok-login" class="button-36">
+    <img src="/path/to/tiktok/logo.png" alt="TikTok Logo" /> Continue With TikTok
+  </a>
+
+  <script>
+    // TikTok App credentials (Client ID - Public)
+    const clientKey = '<CLIENT_KEY>'; // Replace with your actual Client Key
+    const redirectUri = encodeURIComponent('https://your-redirect-url.com'); // Replace with your actual redirect URI
+    const scopes = [
+      'user.info.basic',
+      'user.info.profile',
+      'user.info.stats',
+      'video.publish',
+      'video.upload',
+      'video.list'
+    ].join(',');
+
+    // Construct the TikTok OAuth URL
+    const tiktokAuthUrl = `https://www.tiktok.com/auth/authorize/?client_key=${clientKey}&scope=${scopes}&response_type=code&redirect_uri=${redirectUri}`;
+
+    // Set the URL to the button
+    document.getElementById('tiktok-login').href = tiktokAuthUrl;
+  </script>
+
+</body>
+</html>
